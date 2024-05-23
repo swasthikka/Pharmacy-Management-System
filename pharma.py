@@ -151,3 +151,23 @@ if __name__ == "__main__":
     root=Tk()
     obj=PharmacyManagementSystem(root)
     root.mainloop()
+
+
+
+
+#________anvitha last part ___________
+def DeleteMed (self):
+    conn=mysql.connector.connect(host="localhost", username="root", password="", database="mydata")
+    my_cursor=conn.cursor()
+
+    sql="delete from pharma where Ref=%s"
+    val=(self.refMed_var.get(),)
+    my_cursor.execute(sql, val)
+
+    conn.commit()
+    self.fetch_dataMed()
+    conn.close()
+
+def ClearMEd(self):
+    self.refMed_var.set("")
+    self.addmed_var.set("")
