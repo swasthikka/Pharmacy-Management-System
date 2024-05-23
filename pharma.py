@@ -8,6 +8,26 @@ class PharmacyManagementSystem:
         self.root.title("Pharmacy Management System")
         self.root.geometry("1550x800+0+0")
 
+
+        # ==============addMed variable ===========
+        self.addmed_var=StringVar()
+        self.refMed_var=StringVar()
+
+        # ============== in variable ======================================
+        self.ref_var=StringVar()
+        self.cmpName_var=StringVar()
+        self.typeMed_var=StringVar()
+        self.medName_var StringVar()
+        self.lot_var=StringVar()
+        self.issuedate_var=StringVar()
+        self.expdate_var=StringVar()
+        self.uses_var=StringVar()
+        self.sideEffect_var=StringVar()
+        self.warning_var StringVar()
+        self.dosage_var=StringVar()
+        self.price_var=StringVar()
+        self.product_var=StringVar()
+        
         lbltitle=Label(self.root,text="PHARMACY MANAGEMENT SYSTEM",bd=7, relief=RIDGE
                       ,bg="white",fg="darkblue",font=("times new roman",40,"bold"),padx=3)
         
@@ -33,7 +53,7 @@ class PharmacyManagementSystem:
         ButtonFrame=Frame(self.root,bd=7,relief=RIDGE,padx=10)
         ButtonFrame.place(x=0,y=420,width=1530,height=50)
         #====================MainButton========================
-        btnAddData=Button(ButtonFrame,text="Medicine Add",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnAddData=Button(ButtonFrame,command=self.add_data, text="Medicine Add",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         btnAddData.grid(row=0,column=0)
 
         btnAddData=Button(ButtonFrame,text="Update",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
@@ -147,14 +167,6 @@ class PharmacyManagementSystem:
         txtSideEffect.grid(row=5,column=3)
 
 
-if __name__ == "__main__":
-    root=Tk()
-    obj=PharmacyManagementSystem(root)
-    root.mainloop()
-
-
-
-
 #________anvitha last part ___________
 def DeleteMed (self):
     conn=mysql.connector.connect(host="localhost", username="root", password="", database="mydata")
@@ -171,3 +183,85 @@ def DeleteMed (self):
 def ClearMEd(self):
     self.refMed_var.set("")
     self.addmed_var.set("")
+
+# ======================= Main Table =================
+
+def add_data(self) :
+    if self.ref_var.get()=="" or self.lot.get()=="":
+        messagebox.showerror ("Error","All fields are required")
+    else:    
+        conn=mysql.connector.connect (host ="localhost", username= "root", password= "", database="mydata")
+        my_cursor=conn.cursor()
+        my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+                                                                                            self.ref_var.get(),
+                                                                                            self.cmpName_var.get(),
+                                                                                            self.typeMed_var.get(),
+                                                                                            self.medName_var.get(),
+                                                                                            self.lot_var.get(),
+                                                                                            self.issuedate_var.get(),
+                                                                                            self.expdate_var.get(),
+                                                                                            self.uses_var.get(),
+                                                                                            self.sideEffect_var.get(),
+                                                                                            self.warning_var.get(),
+                                                                                            self.dosage_var.get(),
+                                                                                        self.price_var.get(),
+                                                                                        self.product_var.get()
+                                                                                        ))
+        conn.commit()
+        self.fatch_data()
+        conn.close()
+        messagebox.showinfo("Success","data has been inserted")
+
+def fetch_data(self):
+    conn=mysql.connector.connect (host ="localhost", username= "root", password= "", database="mydata")
+    my_cursor=conn.cursor()
+    my_cursor.execute ("select * from pharmacy")
+    row=my_cursor.fetchall()
+    if len(row)!=0:
+        self.pharmacy_table.delete(*self.pharmacy_table.get_children())
+        for i in row:
+            self.pharmacy_table.insert("", END, values=i)
+        conn.commit()
+    conn.close()
+
+def get_cursor (self,ev="") :
+    cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
+    row=content["values"]
+    
+    self.ref_var.set(row[0]),
+    self.cmpName_var.set(row[1]),
+    self.typeMed_var.set(row[2]),
+    self.medName_var.set(row[3]),
+    self.lot_var.set(row[4]),
+    self.issuedate_var.set(row[5]),
+    self.expdate_var.set(row[6]),
+    self.uses_var.set(row[7]),
+    self.sideEffect_var.set(row[8]),
+    self.warning_var.set(row[9]),
+    self.dosage_var.set(row[10]),
+    self.price_var.set(row[11]),
+    self.product_var.set(row[12])
+
+def Update(self):
+    if self.ref_var.get()=="" or self.lot_var.get()=="":
+        messagebox.showerror("Error", "All fields are Required")
+    else:
+        conn=mysql.connector.connect(host="localhost", username="root", password="Test@123", database="mydata") my_cursor=conn.cursor()
+        my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (
+        self.addmed_var.get(),
+        self.refMed_var.get(),
+        conn.commit()
+        self.fetch_dataMed()
+        conn.close()
+        messagebox.showinfo("Success", "Medicine has been Updated")
+
+
+
+
+if __name__ == "__main__":
+    root=Tk()
+    obj=PharmacyManagementSystem(root)
+    root.mainloop()
+
+
+
