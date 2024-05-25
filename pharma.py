@@ -5,8 +5,8 @@ import mysql.connector
 from tkinter import messagebox
 
 # ==============addMed variable ===========
-        self.addmed_var=StringVar()
-        self.refMed_var=StringVar()
+self.addmed_var=StringVar()
+self.refMed_var=StringVar()
 
 
 class PharmacyManagementSystem:
@@ -48,17 +48,17 @@ class PharmacyManagementSystem:
         btnAddData=Button(ButtonFrame,text="Medicine Add",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         btnAddData.grid(row=0,column=0)
 
-        btnAddData=Button(ButtonFrame,text="Update",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
-        btnAddData.grid(row=0,column=1)
+        btnUpdateData=Button(ButtonFrame,text="Update",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnUpdateData.grid(row=0,column=1)
 
-        btnAddData=Button(ButtonFrame,text="Delete",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
-        btnAddData.grid(row=0,column=2)
+        btnDeleteData=Button(ButtonFrame,text="Delete",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnDeleteData.grid(row=0,column=2)
 
-        btnAddData=Button(ButtonFrame,text="Reset",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
-        btnAddData.grid(row=0,column=3)
+        btnResetData=Button(ButtonFrame,text="Reset",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnResetData.grid(row=0,column=3)
 
-        btnAddData=Button(ButtonFrame,text="Exit",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
-        btnAddData.grid(row=0,column=4)
+        btnExitData=Button(ButtonFrame,text="Exit",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnExitData.grid(row=0,column=4)
         #=======================Search BY=======================
         lblSearch=Label(ButtonFrame,text="Search by",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         lblSearch.grid(row=0,column=5,sticky=W)
