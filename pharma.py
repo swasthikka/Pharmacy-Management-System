@@ -397,7 +397,7 @@ def add_data(self) :
         conn.close()
         messagebox.showinfo("Success","data has been inserted")
 
-def fetch_data(self):
+# def fetch_data(self):
     conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
     my_cursor=conn.cursor()
     my_cursor.execute ("select * from pharmacy")
@@ -434,7 +434,7 @@ def Update(self):
         conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
         my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (
         self.addmed_var.get(),
-        self.refMed_var.get(),
+        self.refMed_var.get()))
         conn.commit()
         self.fetch_dataMed()
         conn.close()
