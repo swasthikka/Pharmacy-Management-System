@@ -1,6 +1,13 @@
 from tkinter import*
 from PIL import Image,ImageTk
 from tkinter import ttk
+import mysql.connector
+from tkinter import messagebox
+
+# ==============addMed variable ===========
+        self.addmed_var=StringVar()
+        self.refMed_var=StringVar()
+
 
 class PharmacyManagementSystem:
     def __init__(self,root):
@@ -179,12 +186,12 @@ class PharmacyManagementSystem:
     
         lblrefno=Label(DataFrameRight,font=("times new roman",12,"bold"),text="Reference No:")
         lblrefno.place(x=0,y=10)
-        txtrefno=Entry(DataFrameRight,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=20)
+        txtrefno=Entry(DataFrameRight,textvariable=self.refMed_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=20)
         txtrefno.place(x=135,y=10)
     
         lblmedName=Label(DataFrameRight,font=("times new roman",12,"bold"),text="Medicine Name:")
         lblmedName.place(x=0,y=45)
-        txtmedName=Entry(DataFrameRight,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=20)
+        txtmedName=Entry(DataFrameRight,textvariable=self.addmed_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=20)
         txtmedName.place(x=135,y=45)
     
     #==================side frame==================
@@ -210,22 +217,23 @@ class PharmacyManagementSystem:
 
         self.medicine_table.column("ref",width=100)
         self.medicine_table.column("medname",width=100)
+        self.medicine_table.bind("<ButtonRelease-1>",self.Medget_cursor)
 
         # ============ Medicine Add Buttons===================
         down_frame=Frame(DataFrameRight,bd=4,relief=RIDGE,bg="darkblue")
         down_frame.place(x=330,y=10,width=138,height=230)
 
-        btnAddmed=Button(down_frame,text="ADD",font=("times new roman",20,"bold"),width=8,bg="#00008B",fg="white",pady=2)
+        btnAddmed=Button(down_frame,command=self.AddMed,text="ADD",font=("times new roman",20,"bold"),width=8,bg="#00008B",fg="white",pady=2)
         btnAddmed.grid(row=0,column=0)
 
-        btnAddmed=Button(down_frame,text="UPDATE",font=("times new roman",20,"bold"),width=8,bg="#0000CD",fg="white",pady=2)
-        btnAddmed.grid(row=1,column=0)
+        btnUpdatemed=Button(down_frame,command=self.UpdateMed,text="UPDATE",font=("times new roman",20,"bold"),width=8,bg="#0000CD",fg="white",pady=2)
+        btnUpdatemed.grid(row=1,column=0)
 
-        btnAddmed=Button(down_frame,text="DELETE",font=("times new roman",20,"bold"),width=8,bg="#00008B",fg="white",pady=2)
-        btnAddmed.grid(row=2,column=0)
+        btnDeletemed=Button(down_frame,text="DELETE",font=("times new roman",20,"bold"),width=8,bg="#00008B",fg="white",pady=2)
+        btnDeletemed.grid(row=2,column=0)
 
-        btnAddmed=Button(down_frame,text="CLEAR",font=("times new roman",20,"bold"),width=8,bg="#0000CD",fg="white",pady=2)
-        btnAddmed.grid(row=3,column=0)
+        btnClearmed=Button(down_frame,text="CLEAR",font=("times new roman",20,"bold"),width=8,bg="#0000CD",fg="white",pady=2)
+        btnClearmed.grid(row=3,column=0)
 
        #==========Frame details=================
         Framedetails=Frame(self.root,bd=15,relief=RIDGE)
@@ -282,15 +290,15 @@ class PharmacyManagementSystem:
         self.pharmacy_table.column("productqt",width=100)
         #_________VKC_end__________#
 
-
+        self.fetch_dataMed()
 #shruthi
 #befor medicine add button
-self.medicine_table.bind("<ButtonRelease-1>",self.Medget_cursor)
+
 #------
-self.fetch_dataMed()
+
 # add medicine functionality==========
 def AddMed(self):
-    conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+    conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
     my_cursor=conn.cursor()
     my_cursor.execute("insert into pharma(Ref,MedName) values(%s,%s)",(
                                                                     self.refMed_var.get(),
@@ -306,7 +314,7 @@ def AddMed(self):
     messagebox.showinfo("Success","Medicine Added") 
 
 def fetch_dataMed(self):
-    conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+    conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
     my_cursor=conn.cursor()
     my_cursor.execute("select * from pharma")
     rows=my_cursor.fetchall()
@@ -330,7 +338,7 @@ def UpdateMed(self):
     if self.refMed_var.get()=="" or self.addmed_var.get()=="":
         messagebox.showerror("Error","All fields are Required")
     else:
-        conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+        conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
         my_cursor=conn.cursor()
         my_cursor.execute("update pharma set MedName=%s where Ref=%s",(
                                                                     self.addmed_var.get(),
@@ -346,7 +354,7 @@ def UpdateMed(self):
 
 #________anvitha last part ___________
 def DeleteMed (self):
-    conn=mysql.connector.connect(host="localhost", username="root", password="", database="mydata")
+    conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
     my_cursor=conn.cursor()
 
     sql="delete from pharma where Ref=%s"
@@ -367,7 +375,7 @@ def add_data(self) :
     if self.ref_var.get()=="" or self.lot.get()=="":
         messagebox.showerror ("Error","All fields are required")
     else:    
-        conn=mysql.connector.connect (host ="localhost", username= "root", password= "", database="mydata")
+        conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
         my_cursor=conn.cursor()
         my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
                                                                                             self.ref_var.get(),
@@ -390,7 +398,7 @@ def add_data(self) :
         messagebox.showinfo("Success","data has been inserted")
 
 def fetch_data(self):
-    conn=mysql.connector.connect (host ="localhost", username= "root", password= "", database="mydata")
+    conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
     my_cursor=conn.cursor()
     my_cursor.execute ("select * from pharmacy")
     row=my_cursor.fetchall()
@@ -423,7 +431,7 @@ def Update(self):
     if self.ref_var.get()=="" or self.lot_var.get()=="":
         messagebox.showerror("Error", "All fields are Required")
     else:
-        conn=mysql.connector.connect(host="localhost", username="root", password="Test@123", database="mydata") my_cursor=conn.cursor()
+        conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
         my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (
         self.addmed_var.get(),
         self.refMed_var.get(),
