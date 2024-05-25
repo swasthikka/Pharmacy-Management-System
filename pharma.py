@@ -1,12 +1,19 @@
 from tkinter import*
 from PIL import Image,ImageTk
 from tkinter import ttk
+import mysql.connector
+from tkinter import messagebox
+
+
 
 class PharmacyManagementSystem:
     def __init__(self,root):
         self.root=root
         self.root.title("Pharmacy Management System")
         self.root.geometry("1550x800+0+0")
+
+
+
 
 
         # ==============addMed variable ===========
@@ -73,7 +80,7 @@ class PharmacyManagementSystem:
 
         serch_combo=ttk.Combobox(ButtonFrame,width=12,font=("times new roman",13,"bold"),state="readonly")
         serch_combo.grid(row=0,column=6)
-        serch_combo["values"]=("Ref","Medname","Lot")
+        serch_combo['values']=("Ref","Medname","Lot")
         serch_combo.grid(row=0,column=6)
         serch_combo.current(0)
 
@@ -91,8 +98,14 @@ class PharmacyManagementSystem:
         lblrefno=Label(DataFrameLeft,text="Reference No",font=("times new roman",13,"bold"))
         lblrefno.grid(row=0,column=0,sticky=W)
 
+
+        conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select Ref from pharma")
+        row=my_cursor.fetchall()
+
         ref_combo=ttk.Combobox(DataFrameLeft,width=23,font=("times new roman",13,"bold"),state="readonly")
-        ref_combo["values"]=("Ref","Medname","Lot")
+        ref_combo['values']=row
         ref_combo.grid(row=0,column=1)
         ref_combo.current(0)
 
@@ -106,7 +119,7 @@ class PharmacyManagementSystem:
         lblTypeofMedicine.grid(row=2,column=0,sticky=W)
 
         comTypeofMedicine=ttk.Combobox(DataFrameLeft,width=23,font=("times new roman",13,"bold"),state="readonly")
-        comTypeofMedicine["values"]=("Tablet","Liquid","Capsules","Topical Medicines","Drops","Inhalse","Injection")
+        comTypeofMedicine['values']=("Tablet","Liquid","Capsules","Topical Medicines","Drops","Inhalse","Injection")
         comTypeofMedicine.grid(row=2,column=1)
         comTypeofMedicine.current(0)
 
@@ -115,8 +128,14 @@ class PharmacyManagementSystem:
         lblMedicineName=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Medicine Name",padx=2,pady=6)
         lblMedicineName.grid(row=3,column=0,sticky=W)
 
+
+        conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select MedName from pharma")
+        med=my_cursor.fetchall()
+
         comMedicineName=ttk.Combobox(DataFrameLeft,state="readonly",width=23,font=("times new roman",13,"bold"))
-        comMedicineName["value"]=("nice","novel")
+        comMedicineName['value']=med
         comMedicineName.current(0)
         comMedicineName.grid(row=3,column=1)
 
@@ -165,6 +184,67 @@ class PharmacyManagementSystem:
         lblSideEffect.grid(row=5,column=2,sticky=W)
         txtSideEffect=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtSideEffect.grid(row=5,column=3)
+
+
+#shruthi
+#befor medicine add button
+self.medicine_table.bind("<ButtonRelease-1>",self.Medget_cursor)
+#------
+self.fetch_dataMed()
+# add medicine functionality==========
+def AddMed(self):
+    conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+    my_cursor=conn.cursor()
+    my_cursor.execute("insert into pharma(Ref,MedName) values(%s,%s)",(
+                                                                    self.refMed_var.get(),
+                                                                    self.Addmed_var.get()
+
+
+
+                                                                        ))
+    conn.commit()
+    self.fetch_dataMed()
+    self.Medget_cursor()
+    conn.close()
+    messagebox.showinfo("Success","Medicine Added") 
+
+def fetch_dataMed(self):
+    conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+    my_cursor=conn.cursor()
+    my_cursor.execute("select * from pharma")
+    rows=my_cursor.fetchall()
+    if len(rows)!=0:
+        self.medicine_table.delete(*self.medicine_table.get_children())
+        for i in rows:
+            self.medicine_table.insert("",END,values=i)
+        conn.commit()
+    conn.close()
+
+    #+===medgetcursor====
+def Medget_cursor(self,event=""):
+    cursor_row=self.medicine_table.focus()
+    content=self.medicine_table.item(cursor_row)
+    row=content["values"]
+    self.refMed_var.set(row[0])
+    self-addmed_var.set(row[1])
+
+
+def UpdateMed(self):
+    if self.refMed_var.get()=="" or self.addmed_var.get()=="":
+        messagebox.showerror("Error","All fields are Required")
+    else:
+        conn=mysql.connector.connect(host="localhost",username="root",password="",database="")
+        my_cursor=conn.cursor()
+        my_cursor.execute("update pharma set MedName=%s where Ref=%s",(
+                                                                    self.addmed_var.get(),
+                                                                    self.refMed_var.get(),
+                                                                    ))
+    conn.commit()
+    self.fetch_dataMed()
+    conn.close()
+
+    messagebox.showinfo("Success","Medicine has been Updated")
+
 
 
 #________anvitha last part ___________
