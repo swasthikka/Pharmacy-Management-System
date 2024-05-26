@@ -15,6 +15,26 @@ class PharmacyManagementSystem:
         self.root.title("Pharmacy Management System")
         self.root.geometry("1550x800+0+0")
 
+        # ============addMed variable==========
+        self.addmed_var=StringVar()
+        self.refMed_var=StringVar()
+        # ==============main variable===
+        self.ref_var=StringVar()
+        self.cmpName_var=StringVar()
+        self.typeMed_var=StringVar()
+        self.medName_var=StringVar()
+        self.lot_var=StringVar()
+        self.issuedate_var=StringVar()
+        self.expdate_var=StringVar()
+        self.uses_var=StringVar()
+        self.sideEffect_var=StringVar()
+        self.warning_var=StringVar()
+        self.dosage_var=StringVar()
+        self.price_var=StringVar()
+        self.product_var=StringVar()
+
+
+        
         lbltitle=Label(self.root,text="PHARMACY MANAGEMENT SYSTEM",bd=7, relief=RIDGE
                       ,bg="white",fg="darkblue",font=("times new roman",40,"bold"),padx=3)
         
@@ -44,14 +64,15 @@ class PharmacyManagementSystem:
         #===================buttonsFrame========================
         ButtonFrame=Frame(self.root,bd=7,relief=RIDGE,padx=10)
         ButtonFrame.place(x=0,y=430,width=1530,height=50)
+        
         #====================MainButton========================
-        btnAddData=Button(ButtonFrame,text="Medicine Add",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnAddData=Button(ButtonFrame,command=self.add_data,text="Medicine Add",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         btnAddData.grid(row=0,column=0)
 
-        btnUpdateData=Button(ButtonFrame,text="Update",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnUpdateData=Button(ButtonFrame,command=self.update_data,text="Update",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         btnUpdateData.grid(row=0,column=1)
 
-        btnDeleteData=Button(ButtonFrame,text="Delete",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        btnDeleteData=Button(ButtonFrame,command=self.delete,text="Delete",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         btnDeleteData.grid(row=0,column=2)
 
         btnResetData=Button(ButtonFrame,text="Reset",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
@@ -82,24 +103,32 @@ class PharmacyManagementSystem:
 
 
         #====================label and entry====================
+        FrameDetails=Frame(self.root, bd=15,padx=20, relief=RIDGE)
+        FrameDetails.place(x=0,y=590, width=1530,height=210)
+
+        conn=mysql.connector.connect(host="localhost", username="root", password="", database="mydata")
+        my_cursor=conn.cursor()
+        my_cursor.execute("select Ref from pharma")
+        r=my_cursor.fetchall()
+        
         lblrefno=Label(DataFrameLeft,text="Reference No",font=("times new roman",13,"bold"))
         lblrefno.grid(row=0,column=0,sticky=W)
 
-        ref_combo=ttk.Combobox(DataFrameLeft,width=23,font=("times new roman",13,"bold"),state="readonly")
+        ref_combo=ttk.Combobox(DataFrameLeft, textvariable=self.ref_var,width=23,font=("times new roman",13,"bold"),state="readonly")
         ref_combo["values"]=("Ref","Medname","Lot")
         ref_combo.grid(row=0,column=1)
         ref_combo.current(0)
 
-        lblCmpName=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Company:",padx=2,pady=6)
+        lblCmpName=Label(DataFrameLeft, font=("times new roman",12,"bold"),text="Company:",padx=2,pady=6)
         lblCmpName.grid(row=1,column=0,sticky=W)
-        txtCmpName=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=27)
+        txtCmpName=Entry(DataFrameLeft,textvariable=self.cmpName_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=27)
         txtCmpName.grid(row=1,column=1)
 
         
         lblTypeofMedicine=Label(DataFrameLeft,text="Type",font=("times new roman",13,"bold"))
         lblTypeofMedicine.grid(row=2,column=0,sticky=W)
 
-        comTypeofMedicine=ttk.Combobox(DataFrameLeft,width=23,font=("times new roman",13,"bold"),state="readonly")
+        comTypeofMedicine=ttk.Combobox(DataFrameLeft,textvariable=self.typeMed_var,width=23,font=("times new roman",13,"bold"),state="readonly")
         comTypeofMedicine["values"]=("Tablet","Liquid","Capsules","Topical Medicines","Drops","Inhalse","Injection")
         comTypeofMedicine.grid(row=2,column=1)
         comTypeofMedicine.current(0)
@@ -109,55 +138,55 @@ class PharmacyManagementSystem:
         lblMedicineName=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Medicine Name",padx=2,pady=6)
         lblMedicineName.grid(row=3,column=0,sticky=W)
 
-        comMedicineName=ttk.Combobox(DataFrameLeft,state="readonly",width=23,font=("times new roman",13,"bold"))
+        comMedicineName=ttk.Combobox(DataFrameLeft,textvariable=self.medName_var,state="readonly",width=23,font=("times new roman",13,"bold"))
         comMedicineName["value"]=("nice","novel")
         comMedicineName.current(0)
         comMedicineName.grid(row=3,column=1)
 
         lblLotNo=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Lot No:",padx=2,pady=6)
         lblLotNo.grid(row=4,column=0,sticky=W)
-        txtLotNo=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtLotNo=Entry(DataFrameLeft,textvariable=self.lot_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtLotNo.grid(row=4,column=1)
 
         lblIssueDate=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Issue Date:",padx=2,pady=6)
         lblIssueDate.grid(row=5,column=0,sticky=W)
-        txtIssueDate=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtIssueDate=Entry(DataFrameLeft,textvariable=self.issuedate_var,textvariable=self.issuedate_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtIssueDate.grid(row=5,column=1)
 
         lblExDate=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Exp Date:",padx=2,pady=6)
         lblExDate.grid(row=6,column=0,sticky=W)
-        txtExDate=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtExDate=Entry(DataFrameLeft,textvariable=self.expdate_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtExDate.grid(row=6,column=1)
 
         
         lblPrecWarning=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Prec & Warning:",padx=2,pady=6)
         lblPrecWarning.grid(row=0,column=2,sticky=W)
-        txtPrecWarning=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtPrecWarning=Entry(DataFrameLeft,textvariable=self.warning_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtPrecWarning.grid(row=0,column=3)
 
         lblDosage=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Dosage:",padx=2,pady=6)
         lblDosage.grid(row=1,column=2,sticky=W)
-        txtDosage=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtDosage=Entry(DataFrameLeft,textvariable=self.dosage_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtDosage.grid(row=1,column=3)
 
         lblPrice=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Price:",padx=2,pady=6)
         lblPrice.grid(row=2,column=2,sticky=W)
-        txtPrice=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtPrice=Entry(DataFrameLeft,textvariable=self.price_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtPrice.grid(row=2,column=3)
 
         lblProductQt=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Product QT:",padx=2,pady=6)
         lblProductQt.grid(row=3,column=2,sticky=W)
-        txtProductQt=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtProductQt=Entry(DataFrameLeft,textvariable=self.product_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtProductQt.grid(row=3,column=3,sticky=W)
 
         lblUses=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Uses:",padx=2,pady=6)
         lblUses.grid(row=4,column=2,sticky=W)
-        txtUses=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtUses=Entry(DataFrameLeft,textvariable=self.uses_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtUses.grid(row=4,column=3)
 
         lblSideEffect=Label(DataFrameLeft,font=("times new roman",12,"bold"),text="Side Effect:",padx=2,pady=6)
         lblSideEffect.grid(row=5,column=2,sticky=W)
-        txtSideEffect=Entry(DataFrameLeft,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
+        txtSideEffect=Entry(DataFrameLeft,textvariable=self.sideEffect_var,font=("times new roman",12,"bold"),bg="white",bd=2,relief=RIDGE,width=29)
         txtSideEffect.grid(row=5,column=3)
 
         #_______VKC_______#
@@ -291,8 +320,10 @@ class PharmacyManagementSystem:
         #_________VKC_end__________#
 
         self.fetch_dataMed()
+        self.fatch_data()
+        self.pharmacy_table.bind("<ButtonRelease-1>",self.get_cursor)
 #shruthi
-#befor medicine add button
+#before medicine add button
 
 #------
 
@@ -353,96 +384,150 @@ def UpdateMed(self):
 
 
 #________anvitha last part ___________
-def DeleteMed (self):
-    conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
-    my_cursor=conn.cursor()
-
-    sql="delete from pharma where Ref=%s"
-    val=(self.refMed_var.get(),)
-    my_cursor.execute(sql, val)
-
-    conn.commit()
-    self.fetch_dataMed()
-    conn.close()
-
-def ClearMEd(self):
-    self.refMed_var.set("")
-    self.addmed_var.set("")
-
-# ======================= Main Table =================
-
-def add_data(self) :
-    if self.ref_var.get()=="" or self.lot.get()=="":
-        messagebox.showerror ("Error","All fields are required")
-    else:    
-        conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
+    def DeleteMed (self):
+        conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
         my_cursor=conn.cursor()
-        my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
-                                                                                            self.ref_var.get(),
-                                                                                            self.cmpName_var.get(),
-                                                                                            self.typeMed_var.get(),
-                                                                                            self.medName_var.get(),
-                                                                                            self.lot_var.get(),
-                                                                                            self.issuedate_var.get(),
-                                                                                            self.expdate_var.get(),
-                                                                                            self.uses_var.get(),
-                                                                                            self.sideEffect_var.get(),
-                                                                                            self.warning_var.get(),
-                                                                                            self.dosage_var.get(),
-                                                                                        self.price_var.get(),
-                                                                                        self.product_var.get()
-                                                                                        ))
-        conn.commit()
-        self.fatch_data()
-        conn.close()
-        messagebox.showinfo("Success","data has been inserted")
-
-# def fetch_data(self):
-    conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
-    my_cursor=conn.cursor()
-    my_cursor.execute ("select * from pharmacy")
-    row=my_cursor.fetchall()
-    if len(row)!=0:
-        self.pharmacy_table.delete(*self.pharmacy_table.get_children())
-        for i in row:
-            self.pharmacy_table.insert("", END, values=i)
-        conn.commit()
-    conn.close()
-
-def get_cursor (self,ev="") :
-    cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
-    row=content["values"]
     
-    self.ref_var.set(row[0]),
-    self.cmpName_var.set(row[1]),
-    self.typeMed_var.set(row[2]),
-    self.medName_var.set(row[3]),
-    self.lot_var.set(row[4]),
-    self.issuedate_var.set(row[5]),
-    self.expdate_var.set(row[6]),
-    self.uses_var.set(row[7]),
-    self.sideEffect_var.set(row[8]),
-    self.warning_var.set(row[9]),
-    self.dosage_var.set(row[10]),
-    self.price_var.set(row[11]),
-    self.product_var.set(row[12])
-
-def Update(self):
-    if self.ref_var.get()=="" or self.lot_var.get()=="":
-        messagebox.showerror("Error", "All fields are Required")
-    else:
-        conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
-        my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (
-        self.addmed_var.get(),
-        self.refMed_var.get()))
+        sql="delete from pharma where Ref=%s"
+        val=(self.refMed_var.get(),)
+        my_cursor.execute(sql, val)
+    
         conn.commit()
         self.fetch_dataMed()
         conn.close()
-        messagebox.showinfo("Success", "Medicine has been Updated")
+    
+    def ClearMEd(self):
+        self.refMed_var.set("")
+        self.addmed_var.set("")
+
+# ======================= Main Table =================
+
+    def add_data(self) :
+        if self.ref_var.get()=="" or self.lot.get()=="":
+            messagebox.showerror ("Error","All fields are required")
+        else:    
+            conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
+            my_cursor=conn.cursor()
+            my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+                                                                                                self.ref_var.get(),
+                                                                                                self.cmpName_var.get(),
+                                                                                                self.typeMed_var.get(),
+                                                                                                self.medName_var.get(),
+                                                                                                self.lot_var.get(),
+                                                                                                self.issuedate_var.get(),
+                                                                                                self.expdate_var.get(),
+                                                                                                self.uses_var.get(),
+                                                                                                self.sideEffect_var.get(),
+                                                                                                self.warning_var.get(),
+                                                                                                self.dosage_var.get(),
+                                                                                            self.price_var.get(),
+                                                                                            self.product_var.get()
+                                                                                            ))
+            conn.commit()
+            self.fatch_data()
+            conn.close()
+            messagebox.showinfo("Success","data has been inserted")
+    
+    def fatch_data(self):
+        conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
+        my_cursor=conn.cursor()
+        my_cursor.execute ("select * from pharmacy")
+        row=my_cursor.fetchall()
+        if len(row)!=0:
+            self.pharmacy_table.delete(*self.pharmacy_table.get_children())
+            for i in row:
+                self.pharmacy_table.insert("", END, values=i)
+            conn.commit()
+        conn.close()
+    
+    def get_cursor (self,ev="") :
+        cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
+        row=content["values"]
+        
+        self.ref_var.set(row[0]),
+        self.cmpName_var.set(row[1]),
+        self.typeMed_var.set(row[2]),
+        self.medName_var.set(row[3]),
+        self.lot_var.set(row[4]),
+        self.issuedate_var.set(row[5]),
+        self.expdate_var.set(row[6]),
+        self.uses_var.set(row[7]),
+        self.sideEffect_var.set(row[8]),
+        self.warning_var.set(row[9]),
+        self.dosage_var.set(row[10]),
+        self.price_var.set(row[11]),
+        self.product_var.set(row[12])
+    
+    def Update(self):
+        if self.ref_var.get()=="" or self.lot_var.get()=="":
+            messagebox.showerror("Error", "All fields are Required")
+        else:
+            conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
+            my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (    
+                                                                                                                                                                                                                    self.cmpName_var.get(),
+                                                                                                                                                                                                                    self.typeMed_var.get(),
+                                                                                                                                                                                                                    self.medName_var.get(),
+                                                                                                                                                                                                                    self.lot_var.get(),
+                                                                                                                                                                                                                    self.issuedate_var.get(),
+                                                                                                                                                                                                                    self.expdate_var.get(),
+                                                                                                                                                                                                                    self.uses_var.get(),
+                                                                                                                                                                                                                    self.sideEffect_var.get(),
+                                                                                                                                                                                                                    self.warning_var.get(),
+                                                                                                                                                                                                                    self.dosage_var.get(),
+                                                                                                                                                                                                                    self.price_var.get(),
+                                                                                                                                                                                                                    self.product_var.get(),
+                                                                                                                                                                                                                    self.ref_var.get()
+                                                                                                                                                                                                                               ))
+            
+            
+            conn.commit()
+            self.fatch_data()
+            conn.close()
+            messagebox.showinfo("UPDATE", "Record has been updated successfully")
+
+        def delete(self):
+            conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
+            my_cursor=conn.cursor()
+        
+            sql="delete from pharmacy where Ref=%s"
+            val=(self.ref_var.get(),)
+            my_cursor.execute(sql, val)
+        
+            conn.commit()
+            self.fatch_data()
+            conn.close()
+
+            messagebox.showinfo("Delete", "Info deleted successfully")
+
+        def reset(self):
+            # self.ref_var.set(""),
+            self.cmpName_var.set(""),
+            #self.typeMed_var.set(""),
+            # self.medName_var.set(""),
+            self.lot_var.set(""),
+            self.issuedate_var.set(""),
+            self.expdate_var.set(""),
+            self.uses_var.set(""),
+            self.sideEffect_var.set(""),
+            self.warning_var.set(""),
+            self.dosage_var.set(r""),
+            self.price_var.set(r""),
+            self.product_var.set(r"")
+            
+        def search_data(self):
+            conn=mysql.connector.connect(host='localhost', username='root', password='Test@123', database='manage my_cursor=conn.cursor()
+            my_cursor.execute("select * from pharmacy where" +str(self.search_var.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
+           
+            rows=my_cursor.fetchall()
+            if len(rows)!=0:
+                self.pharmacy_table.delete(*self.pharmacy_table.get_children())
+                for i in rows:
+                    self.pharmacy_table.insert("", END, values=i)
+                conn.commit()
+            conn.close()
 
 
-
-
+            
 if __name__ == "__main__":
     root=Tk()
     obj=PharmacyManagementSystem(root)
