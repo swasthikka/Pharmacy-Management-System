@@ -517,7 +517,7 @@ class PharmacyManagementSystem:
                 
             def search_data(self):
                 conn=mysql.connector.connect(host='localhost', username='root', password='Test@123', database='manage my_cursor=conn.cursor()
-                my_cursor.execute("select * from pharmacy where" +str(self.search_var.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
+                my_cursor.execute("select * from pharmacy where" +str(self.search.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
             
                 rows=my_cursor.fetchall()
                 if len(rows)!=0:
