@@ -83,20 +83,22 @@ class PharmacyManagementSystem:
         lblSearch=Label(ButtonFrame,text="Search by",font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         lblSearch.grid(row=0,column=5,sticky=W)
 
+        self.search_var=StringVar()
         serch_combo=ttk.Combobox(ButtonFrame,width=12,font=("times new roman",13,"bold"),state="readonly")
         serch_combo.grid(row=0,column=6)
         serch_combo["values"]=("Ref","Medname","Lot")
         serch_combo.grid(row=0,column=6)
         serch_combo.current(0)
 
+        self.serchText_var=StringVar()
         txtSerch=Entry(ButtonFrame,bd=3,relief=RIDGE,width=12,font=("times new roman",20,"bold"))
         txtSerch.grid(row=0,column=7)
 
-        searchBtn=Button(ButtonFrame,text="Search",width=7,font=("times new roman",20,"bold"),bg="darkblue",fg="white")
+        searchBtn=Button(ButtonFrame,command=self.search_data,text="Search",width=7,font=("times new roman",20,"bold"),bg="darkblue",fg="white")
         searchBtn.grid(row=0,column=8)
         searchBtn.place(x=1259)
 
-        showAll=Button(ButtonFrame,text="Show",width=7,font=("times new roman",20,"bold"),fg="white",bg="darkblue")
+        showAll=Button(ButtonFrame,command=self.fatch_data,text="Show",width=7,font=("times new roman",20,"bold"),fg="white",bg="darkblue")
         showAll.grid(row=0,column=9)
         showAll.place(x=1380)
 
@@ -327,58 +329,58 @@ class PharmacyManagementSystem:
 #------
 
 # add medicine functionality==========
-def AddMed(self):
-    conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
-    my_cursor=conn.cursor()
-    my_cursor.execute("insert into pharma(Ref,MedName) values(%s,%s)",(
-                                                                    self.refMed_var.get(),
-                                                                    self.Addmed_var.get()
+        def AddMed(self):
+            conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
+            my_cursor=conn.cursor()
+            my_cursor.execute("insert into pharma(Ref,MedName) values(%s,%s)",(
+                                                                            self.refMed_var.get(),
+                                                                            self.Addmed_var.get()
 
 
 
-                                                                        ))
-    conn.commit()
-    self.fetch_dataMed()
-    self.Medget_cursor()
-    conn.close()
-    messagebox.showinfo("Success","Medicine Added") 
+                                                                                ))
+            conn.commit()
+            self.fetch_dataMed()
+            self.Medget_cursor()
+            conn.close()
+            messagebox.showinfo("Success","Medicine Added") 
 
-def fetch_dataMed(self):
-    conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
-    my_cursor=conn.cursor()
-    my_cursor.execute("select * from pharma")
-    rows=my_cursor.fetchall()
-    if len(rows)!=0:
-        self.medicine_table.delete(*self.medicine_table.get_children())
-        for i in rows:
-            self.medicine_table.insert("",END,values=i)
-        conn.commit()
-    conn.close()
+        def fetch_dataMed(self):
+            conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
+            my_cursor=conn.cursor()
+            my_cursor.execute("select * from pharma")
+            rows=my_cursor.fetchall()
+            if len(rows)!=0:
+                self.medicine_table.delete(*self.medicine_table.get_children())
+                for i in rows:
+                    self.medicine_table.insert("",END,values=i)
+                conn.commit()
+            conn.close()
 
-    #+===medgetcursor====
-def Medget_cursor(self,event=""):
-    cursor_row=self.medicine_table.focus()
-    content=self.medicine_table.item(cursor_row)
-    row=content["values"]
-    self.refMed_var.set(row[0])
-    self-addmed_var.set(row[1])
+            #+===medgetcursor====
+        def Medget_cursor(self,event=""):
+            cursor_row=self.medicine_table.focus()
+            content=self.medicine_table.item(cursor_row)
+            row=content["values"]
+            self.refMed_var.set(row[0])
+            self-addmed_var.set(row[1])
 
 
-def UpdateMed(self):
-    if self.refMed_var.get()=="" or self.addmed_var.get()=="":
-        messagebox.showerror("Error","All fields are Required")
-    else:
-        conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
-        my_cursor=conn.cursor()
-        my_cursor.execute("update pharma set MedName=%s where Ref=%s",(
-                                                                    self.addmed_var.get(),
-                                                                    self.refMed_var.get(),
-                                                                    ))
-    conn.commit()
-    self.fetch_dataMed()
-    conn.close()
+        def UpdateMed(self):
+            if self.refMed_var.get()=="" or self.addmed_var.get()=="":
+                messagebox.showerror("Error","All fields are Required")
+            else:
+                conn=mysql.connector.connect(host="localhost",username="root",password="anvitha",database="anvitha")
+                my_cursor=conn.cursor()
+                my_cursor.execute("update pharma set MedName=%s where Ref=%s",(
+                                                                            self.addmed_var.get(),
+                                                                            self.refMed_var.get(),
+                                                                            ))
+            conn.commit()
+            self.fetch_dataMed()
+            conn.close()
 
-    messagebox.showinfo("Success","Medicine has been Updated")
+            messagebox.showinfo("Success","Medicine has been Updated")
 
 
 
