@@ -33,7 +33,6 @@ class PharmacyManagementSystem:
         self.price_var=StringVar()
         self.product_var=StringVar()
 
-
         
         lbltitle=Label(self.root,text="PHARMACY MANAGEMENT SYSTEM",bd=7, relief=RIDGE
                       ,bg="white",fg="darkblue",font=("times new roman",40,"bold"),padx=3)
@@ -384,147 +383,147 @@ def UpdateMed(self):
 
 
 #________anvitha last part ___________
-    def DeleteMed (self):
-        conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
-        my_cursor=conn.cursor()
-    
-        sql="delete from pharma where Ref=%s"
-        val=(self.refMed_var.get(),)
-        my_cursor.execute(sql, val)
-    
-        conn.commit()
-        self.fetch_dataMed()
-        conn.close()
-    
-    def ClearMEd(self):
-        self.refMed_var.set("")
-        self.addmed_var.set("")
-
-# ======================= Main Table =================
-
-    def add_data(self) :
-        if self.ref_var.get()=="" or self.lot.get()=="":
-            messagebox.showerror ("Error","All fields are required")
-        else:    
-            conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
-            my_cursor=conn.cursor()
-            my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
-                                                                                                self.ref_var.get(),
-                                                                                                self.cmpName_var.get(),
-                                                                                                self.typeMed_var.get(),
-                                                                                                self.medName_var.get(),
-                                                                                                self.lot_var.get(),
-                                                                                                self.issuedate_var.get(),
-                                                                                                self.expdate_var.get(),
-                                                                                                self.uses_var.get(),
-                                                                                                self.sideEffect_var.get(),
-                                                                                                self.warning_var.get(),
-                                                                                                self.dosage_var.get(),
-                                                                                            self.price_var.get(),
-                                                                                            self.product_var.get()
-                                                                                            ))
-            conn.commit()
-            self.fatch_data()
-            conn.close()
-            messagebox.showinfo("Success","data has been inserted")
-    
-    def fatch_data(self):
-        conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
-        my_cursor=conn.cursor()
-        my_cursor.execute ("select * from pharmacy")
-        row=my_cursor.fetchall()
-        if len(row)!=0:
-            self.pharmacy_table.delete(*self.pharmacy_table.get_children())
-            for i in row:
-                self.pharmacy_table.insert("", END, values=i)
-            conn.commit()
-        conn.close()
-    
-    def get_cursor (self,ev="") :
-        cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
-        row=content["values"]
-        
-        self.ref_var.set(row[0]),
-        self.cmpName_var.set(row[1]),
-        self.typeMed_var.set(row[2]),
-        self.medName_var.set(row[3]),
-        self.lot_var.set(row[4]),
-        self.issuedate_var.set(row[5]),
-        self.expdate_var.set(row[6]),
-        self.uses_var.set(row[7]),
-        self.sideEffect_var.set(row[8]),
-        self.warning_var.set(row[9]),
-        self.dosage_var.set(row[10]),
-        self.price_var.set(row[11]),
-        self.product_var.set(row[12])
-    
-    def Update(self):
-        if self.ref_var.get()=="" or self.lot_var.get()=="":
-            messagebox.showerror("Error", "All fields are Required")
-        else:
-            conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
-            my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (    
-                                                                                                                                                                                                                    self.cmpName_var.get(),
-                                                                                                                                                                                                                    self.typeMed_var.get(),
-                                                                                                                                                                                                                    self.medName_var.get(),
-                                                                                                                                                                                                                    self.lot_var.get(),
-                                                                                                                                                                                                                    self.issuedate_var.get(),
-                                                                                                                                                                                                                    self.expdate_var.get(),
-                                                                                                                                                                                                                    self.uses_var.get(),
-                                                                                                                                                                                                                    self.sideEffect_var.get(),
-                                                                                                                                                                                                                    self.warning_var.get(),
-                                                                                                                                                                                                                    self.dosage_var.get(),
-                                                                                                                                                                                                                    self.price_var.get(),
-                                                                                                                                                                                                                    self.product_var.get(),
-                                                                                                                                                                                                                    self.ref_var.get()
-                                                                                                                                                                                                                               ))
-            
-            
-            conn.commit()
-            self.fatch_data()
-            conn.close()
-            messagebox.showinfo("UPDATE", "Record has been updated successfully")
-
-        def delete(self):
+        def DeleteMed (self):
             conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
             my_cursor=conn.cursor()
         
-            sql="delete from pharmacy where Ref=%s"
-            val=(self.ref_var.get(),)
+            sql="delete from pharma where Ref=%s"
+            val=(self.refMed_var.get(),)
             my_cursor.execute(sql, val)
         
             conn.commit()
-            self.fatch_data()
+            self.fetch_dataMed()
             conn.close()
+        
+        def ClearMEd(self):
+            self.refMed_var.set("")
+            self.addmed_var.set("")
 
-            messagebox.showinfo("Delete", "Info deleted successfully")
+# ======================= Main Table =================
 
-        def reset(self):
-            # self.ref_var.set(""),
-            self.cmpName_var.set(""),
-            #self.typeMed_var.set(""),
-            # self.medName_var.set(""),
-            self.lot_var.set(""),
-            self.issuedate_var.set(""),
-            self.expdate_var.set(""),
-            self.uses_var.set(""),
-            self.sideEffect_var.set(""),
-            self.warning_var.set(""),
-            self.dosage_var.set(r""),
-            self.price_var.set(r""),
-            self.product_var.set(r"")
-            
-        def search_data(self):
-            conn=mysql.connector.connect(host='localhost', username='root', password='Test@123', database='manage my_cursor=conn.cursor()
-            my_cursor.execute("select * from pharmacy where" +str(self.search_var.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
-           
-            rows=my_cursor.fetchall()
-            if len(rows)!=0:
+        def add_data(self) :
+            if self.ref_var.get()=="" or self.lot.get()=="":
+                messagebox.showerror ("Error","All fields are required")
+            else:    
+                conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
+                my_cursor=conn.cursor()
+                my_cursor.execute("insert into pharmacy values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(
+                                                                                                    self.ref_var.get(),
+                                                                                                    self.cmpName_var.get(),
+                                                                                                    self.typeMed_var.get(),
+                                                                                                    self.medName_var.get(),
+                                                                                                    self.lot_var.get(),
+                                                                                                    self.issuedate_var.get(),
+                                                                                                    self.expdate_var.get(),
+                                                                                                    self.uses_var.get(),
+                                                                                                    self.sideEffect_var.get(),
+                                                                                                    self.warning_var.get(),
+                                                                                                    self.dosage_var.get(),
+                                                                                                self.price_var.get(),
+                                                                                                self.product_var.get()
+                                                                                                ))
+                conn.commit()
+                self.fatch_data()
+                conn.close()
+                messagebox.showinfo("Success","data has been inserted")
+        
+        def fatch_data(self):
+            conn=mysql.connector.connect (host ="localhost", username= "root", password= "anvitha", database="anvitha")
+            my_cursor=conn.cursor()
+            my_cursor.execute ("select * from pharmacy")
+            row=my_cursor.fetchall()
+            if len(row)!=0:
                 self.pharmacy_table.delete(*self.pharmacy_table.get_children())
-                for i in rows:
+                for i in row:
                     self.pharmacy_table.insert("", END, values=i)
                 conn.commit()
             conn.close()
+        
+        def get_cursor (self,ev="") :
+            cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
+            row=content["values"]
+            
+            self.ref_var.set(row[0]),
+            self.cmpName_var.set(row[1]),
+            self.typeMed_var.set(row[2]),
+            self.medName_var.set(row[3]),
+            self.lot_var.set(row[4]),
+            self.issuedate_var.set(row[5]),
+            self.expdate_var.set(row[6]),
+            self.uses_var.set(row[7]),
+            self.sideEffect_var.set(row[8]),
+            self.warning_var.set(row[9]),
+            self.dosage_var.set(row[10]),
+            self.price_var.set(row[11]),
+            self.product_var.set(row[12])
+        
+        def Update(self):
+            if self.ref_var.get()=="" or self.lot_var.get()=="":
+                messagebox.showerror("Error", "All fields are Required")
+            else:
+                conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
+                my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (    
+                                                                                                                                                                                                                        self.cmpName_var.get(),
+                                                                                                                                                                                                                        self.typeMed_var.get(),
+                                                                                                                                                                                                                        self.medName_var.get(),
+                                                                                                                                                                                                                        self.lot_var.get(),
+                                                                                                                                                                                                                        self.issuedate_var.get(),
+                                                                                                                                                                                                                        self.expdate_var.get(),
+                                                                                                                                                                                                                        self.uses_var.get(),
+                                                                                                                                                                                                                        self.sideEffect_var.get(),
+                                                                                                                                                                                                                        self.warning_var.get(),
+                                                                                                                                                                                                                        self.dosage_var.get(),
+                                                                                                                                                                                                                        self.price_var.get(),
+                                                                                                                                                                                                                        self.product_var.get(),
+                                                                                                                                                                                                                        self.ref_var.get()
+                                                                                                                                                                                                                                ))
+                
+                
+                conn.commit()
+                self.fatch_data()
+                conn.close()
+                messagebox.showinfo("UPDATE", "Record has been updated successfully")
+
+            def delete(self):
+                conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
+                my_cursor=conn.cursor()
+            
+                sql="delete from pharmacy where Ref=%s"
+                val=(self.ref_var.get(),)
+                my_cursor.execute(sql, val)
+            
+                conn.commit()
+                self.fatch_data()
+                conn.close()
+
+                messagebox.showinfo("Delete", "Info deleted successfully")
+
+            def reset(self):
+                # self.ref_var.set(""),
+                self.cmpName_var.set(""),
+                #self.typeMed_var.set(""),
+                # self.medName_var.set(""),
+                self.lot_var.set(""),
+                self.issuedate_var.set(""),
+                self.expdate_var.set(""),
+                self.uses_var.set(""),
+                self.sideEffect_var.set(""),
+                self.warning_var.set(""),
+                self.dosage_var.set(r""),
+                self.price_var.set(r""),
+                self.product_var.set(r"")
+                
+            def search_data(self):
+                conn=mysql.connector.connect(host='localhost', username='root', password='Test@123', database='manage my_cursor=conn.cursor()
+                my_cursor.execute("select * from pharmacy where" +str(self.search_var.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
+            
+                rows=my_cursor.fetchall()
+                if len(rows)!=0:
+                    self.pharmacy_table.delete(*self.pharmacy_table.get_children())
+                    for i in rows:
+                        self.pharmacy_table.insert("", END, values=i)
+                    conn.commit()
+                conn.close()
 
 
             
