@@ -463,7 +463,8 @@ class PharmacyManagementSystem:
             if self.ref_var.get()=="" or self.lot_var.get()=="":
                 messagebox.showerror("Error", "All fields are Required")
             else:
-                conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") my_cursor=conn.cursor()
+                conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha") 
+                my_cursor=conn.cursor()
                 my_cursor.execute("update pharmacy set cmpName=%s, Type=%s, medname=%s, lot=%s, isuuedate=%d,expdate=%s, uses=%s, sideeffects= %s, warning=%s, dosage= %s, price=%s, product=%s  where refno=%s", (    
                                                                                                                                                                                                                         self.cmpName_var.get(),
                                                                                                                                                                                                                         self.typeMed_var.get(),
@@ -516,7 +517,8 @@ class PharmacyManagementSystem:
                 self.product_var.set(r"")
                 
             def search_data(self):
-                conn=mysql.connector.connect(host='localhost', username='root', password='Test@123', database='manage my_cursor=conn.cursor()
+                conn=mysql.connector.connect(host='localhost', username='root', password='anvitha', database='anvitha')
+                my_cursor=conn.cursor()
                 my_cursor.execute("select * from pharmacy where" +str(self.serch.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
             
                 rows=my_cursor.fetchall()
