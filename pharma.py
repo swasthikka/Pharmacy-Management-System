@@ -442,7 +442,8 @@ class PharmacyManagementSystem:
             conn.close()
         
         def get_cursor (self,ev="") :
-            cursor_row=self.medicine_table.focus() content=self.medicine_table.item(cursor_row)
+            cursor_row=self.medicine_table.focus() 
+            content=self.medicine_table.item(cursor_row)
             row=content["values"]
             
             self.ref_var.set(row[0]),
