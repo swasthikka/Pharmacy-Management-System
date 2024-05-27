@@ -363,7 +363,7 @@ class PharmacyManagementSystem:
             content=self.medicine_table.item(cursor_row)
             row=content["values"]
             self.refMed_var.set(row[0])
-            self-addmed_var.set(row[1])
+            self.addmed_var.set(row[1])
 
 
         def UpdateMed(self):
