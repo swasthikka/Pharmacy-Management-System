@@ -107,7 +107,7 @@ class PharmacyManagementSystem:
         FrameDetails=Frame(self.root, bd=15,padx=20, relief=RIDGE)
         FrameDetails.place(x=0,y=590, width=1530,height=210)
 
-        conn=mysql.connector.connect(host="localhost", username="root", password="", database="mydata")
+        conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
         my_cursor=conn.cursor()
         my_cursor.execute("select Ref from pharma")
         r=my_cursor.fetchall()
@@ -517,7 +517,7 @@ class PharmacyManagementSystem:
                 self.product_var.set(r"")
                 
             def search_data(self):
-                conn=mysql.connector.connect(host='localhost', username='root', password='anvitha', database='anvitha')
+                conn=mysql.connector.connect(host="localhost", username="root", password="anvitha", database="anvitha")
                 my_cursor=conn.cursor()
                 my_cursor.execute("select * from pharmacy where" +str(self.serch.get())+" LIKE '%"+str(self.searchTxt_var.get())+"%")
             
